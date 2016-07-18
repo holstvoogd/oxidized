@@ -61,7 +61,7 @@ class Git < Output
   def fetch node, group
     begin
       repo = @cfg.repo
-      repo = File.join File.dirname(repo), group + '.git' if group and not @cfg.single_repo?
+      repo = repo[group] if group and not @cfg.single_repo?
       repo = Rugged::Repository.new repo
       index = repo.index
       index.read_tree repo.head.target.tree unless repo.empty?
@@ -81,7 +81,7 @@ class Git < Output
         if group and @cfg.single_repo?
           path = "#{group}/#{node}"
         elsif group
-          repo = File.join File.dirname(repo), group + '.git'
+          repo = repo[group]
         end
         repo = Rugged::Repository.new repo
         walker = Rugged::Walker.new(repo)
@@ -111,7 +111,7 @@ class Git < Output
       begin
         repo = @cfg.repo
         if group && group != '' && !@cfg.single_repo?
-          repo = File.join File.dirname(repo), group + '.git'
+          repo = repo[group]
         elsif group && group != ''
           node = File.join group, node
         end
@@ -128,7 +128,7 @@ class Git < Output
         repo = @cfg.repo
         diff_commits = nil
         if group && group != '' && !@cfg.single_repo?
-          repo = File.join File.dirname(repo), group + '.git'
+          repo = repo[group]
         end
         repo = Rugged::Repository.new repo
         commit = repo.lookup(oid1)
