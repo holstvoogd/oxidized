@@ -81,7 +81,7 @@ class Git < Output
         if group and @cfg.single_repo?
           path = "#{group}/#{node}"
         elsif group
-          repo = File.join File.dirname(repo), group + '.git'
+          repo = repo[group]
         end
         repo = Rugged::Repository.new repo
         walker = Rugged::Walker.new(repo)
